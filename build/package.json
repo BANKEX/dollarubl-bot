@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "name": "awa-bot",
+  "description": "AWA Bot",
+  "yumDependencies": [
+    "python34u"
+  ],
+  "gruntCwd": "admin",
+  "yumBuildDependencies": [
+    "python34u",
+    "python34u-devel",
+    "rpm-build",
+    "redhat-rpm-config"
+  ],
+  "excludeFiles": [
+    ".gitlab-ci.yml",
+    "admin/node_modules"
+  ]
+}

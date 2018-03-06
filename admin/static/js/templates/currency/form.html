@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="row">
+        <h2><% if (item.get('id')) { %>
+            Редактирование курса валюты
+            <% } else { %>
+            Добавление курса валюты
+            <% } %>
+        </h2>
+        <form class="js-currency-form form-horizontal" role="form">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Код</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" name="code" value="<%- item.get('code') %>" required/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Значение</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" name="value" value="<%- item.get('value') %>"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Направление</label>
+                        <div class="col-md-8">
+                            <%= self.html.select({
+                            name: 'direct',
+                            selected: item.get('direct'),
+                            values: {
+                            'sale': 'Продажа',
+                            'buy': 'Покупка'
+                            }
+                            }) %>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="use_api">Обновлять из API</label>
+                        <div class="col-md-8">
+                            <div class="checkbox">
+                                <input id="use_api" type="checkbox" value="true" name="use_api" <%- item.get('use_api') ? 'checked' : '' %>>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+
+            <% if (item.get('id')) { %>
+            <input type="hidden" name="id" value="<%- item.get('id') %>"/>
+            <% } %>
+            <div class="form-group">
+                <div class="col-md-9">
+                    <button id="btn-signup" type="submit" class="btn btn-success">Сохранить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

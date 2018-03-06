@@ -1,0 +1,148 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Запросы</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="col-md-1">
+                            Номер в системе
+                            <hr style="margin: 5px 0;"/>
+                            Номер в обменнике
+                        </th>
+                        <th class="col-md-1">Пользователь</th>
+                        <th class="col-md-1">Тип</th>
+                        <th class="col-md-1">Кол-во по курсу</th>
+                        <th class="col-md-2">Шаг</th>
+                        <th class="col-md-1">Расстояние</th>
+                        <th class="col-md-1">Оценка</th>
+                        <th class="col-md-2">Комментарий</th>
+                        <th class="col-md-1">Дата</th>
+                        <th class="col-md-1">Обменник</th>
+                        <th class="col-md-1">Подтверждено ПО</th>
+                        <th class="col-md-1">Дата изъятия комиссии</th>
+                        <th class="col-md-1"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                    items.each(function(item){
+                    %>
+                    <tr data-id="<%- item.get('id') %>" class="js-admin-row">
+                        <td><%- item.get('number') %> / <%- item.get('external_id') %></td>
+                        <td>
+                            <% if (item.get('user').username) { %>
+                                <a href="https://telegram.me/<%- item.get('user').username %>" target="_blank">
+                                    <%- item.get('user').name %> <%- item.get('user').surname %>
+                                </a>
+                            <% } else { %>
+                                <%- item.get('user').name %> <%- item.get('user').surname %>
+                            <% } %>
+                        </td>
+                        <td><%- item.get('type') %></td>
+                        <td><%- item.get('amount') %> по <%- item.get('course') %></td>
+                        <td><%- item.get('step_title') %></td>
+                        <td><%- item.get('distance') %></td>
+                        <td><%- item.get('rating_value')? item.get('rating_value'): 'Не менял' %></td>
+                        <td><%- item.get('rating_comment') %></td>
+                        <td><%- item.get('update_date') %></td>
+                        <td>
+                            <% if(item.get('exchange').id) { %>
+                            <a href="/exchanges/edit/<%- item.get('exchange').id %>">
+                                <%- item.get('exchange').title %>
+                            </a>
+                            <% } %>
+                        </td>
+                        <td>
+                            <input <%- item.get('exchange_confirm') ? 'checked' : '' %> class="js-exchange-confirm"
+                            data-id="<%- item.get('id') %>" type="checkbox"/>
+                        </td>
+                        <td>
+                            <a href="#" class="js-set-date" data-id="<%- item.id %>">
+                                <%- item.getDateCommissionWithdrawal() %>
+                            </a>
+                        </td>
+                        <td>
+                            <% if (item.isPlay()) { %>
+                            <a href="#" class="js-response" data-id="<%- item.get('id') %>" data-toggle="modal" data-target="#respondModal">
+                                <i class="glyphicon glyphicon-play"></i>
+                            </a>
+                            <% } %>
+
+                            <% if (item.isDeleted()) { %>
+                            <a href="#" class="js-request-fail" data-id="<%- item.get('id') %>">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </a>
+                            <% } %>
+                        </td>
+                    </tr>
+                    <%
+                    });
+                    %>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-offset-3 col-md-6 text-center">
+            <ul class="pagination ">
+                <% if (offset >= items.pageSize) { %>
+                <li data-offset="0" class="pagination__item pagination__item_requests">
+                    <a href="#">В начало</a>
+                </li>
+                <% } %>
+
+                <%
+                for(var i = items.getBeginPagination(offset); i < items.getEndPagination(offset); i++) { %>
+                <li data-offset="<%- (items.pageSize * i) %>" class="pagination__item pagination__item_requests <% if (offset == (items.pageSize * i)) { %>active<% }%>">
+                    <a href="#"><%- i+1 %></a>
+                </li>
+                <% } %>
+
+                <% if (offset < items.pageSize * (items.pageCount -1)) { %>
+                <li data-offset="<%- (items.pageSize * (items.pageCount -1)) %>" class="pagination__item pagination__item_requests">
+                    <a href="#">Последняя</a>
+                </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="respondModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <form class="modal-content form-horizontal js-exchange-respond">
+            <input type="hidden" name="request_id" value=""/>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Ответить за обменник</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Обменник</label>
+                    <div class="col-md-8">
+                        <input type="text" class="form-control js-exchanges-suggest"/>
+                        <input type="hidden" name="exchange_id" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Внутренний номер заказа в обменнике</label>
+                    <div class="col-md-8">
+                        <input type="hidden" disabled class="hidden" name="external_id"/>
+                        <input type="text" class="form-control" name="external_id" required/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                <button type="submit" class="btn js-submit btn-primary" disabled>Ответить</button>
+            </div>
+        </form>
+    </div>
+</div>

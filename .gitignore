@@ -1,0 +1,8 @@
+env/
+*.pyc
+.idea
+admin/node_modules
+admin/public
+admin/static/bower_components
+public
+runtime

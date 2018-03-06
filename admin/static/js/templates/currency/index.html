@@ -1,0 +1,90 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Валюты</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+                <a href="/currencies/add" class="btn btn-xs js-add-phys">
+                    <span class="glyphicon glyphicon-plus"></span> Добавить
+                </a>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="col-md-1">Код</th>
+                        <th class="col-md-2">Значение</th>
+                        <th class="col-md-2">Направление</th>
+                        <th class="col-md-2">Последнее обновление</th>
+                        <th class="col-md-2">Обновлять из API</th>
+                        <th class="col-md-3"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                    items.each(function(item){
+                    %>
+                    <tr data-id="<%- item.get('id') %>" class="js-currency-row">
+                        <td>
+                            <%- item.get('code') %>
+                        </td>
+                        <td>
+                            <%- item.get('value') %>
+                        </td>
+                        <td>
+                            <%- item.get('direct') %>
+                        </td>
+                        <td>
+                            <%- item.get('update_date') %>
+                        </td>
+                        <td>
+                            <%- item.get('use_api') ? 'Да' : 'Нет'  %>
+                        </td>
+                        <td>
+                            <a href="/currencies/edit/<%- item.get('id') %>">
+                                <span class="glyphicon glyphicon-edit"></span>
+                                Редактировать
+                            </a>
+                            <a href="#" data-id="<%- item.get('id') %>" class="js-currency-remove">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                Удалить
+                            </a>
+                        </td>
+                    </tr>
+                    <%
+                    });
+                    %>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-offset-3 col-md-6 text-center">
+            <ul class="pagination ">
+                <% if (offset >= items.pageSize) { %>
+                <li data-offset="0" class="pagination__item pagination__item_currencies">
+                    <a href="#">В начало</a>
+                </li>
+                <% } %>
+
+                <%
+                for(var i = items.getBeginPagination(offset); i < items.getEndPagination(offset); i++) { %>
+                <li data-offset="<%- (items.pageSize * i) %>" class="pagination__item pagination__item_currencies <% if (offset == (items.pageSize * i)) { %>active<% }%>">
+                    <a href="#"><%- i+1 %></a>
+                </li>
+                <% } %>
+
+                <% if (offset < items.pageSize * (items.pageCount -1)) { %>
+                <li data-offset="<%- (items.pageSize * (items.pageCount -1)) %>" class="pagination__item pagination__item_currencies">
+                    <a href="#">Последняя</a>
+                </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Пользователи</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Фамилия и имя</th>
+                        <th>Ник</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                    items.each(function(item){
+                    %>
+                    <tr data-id="<%- item.get('id') %>">
+
+                        <td>
+                            <%- item.get('out_id') %>
+                        </td>
+                        <td><%- item.get('name') %> <%- item.get('surname') %></td>
+                        <td>
+                            <a target="_blank" href="https://telegram.me/<%- item.get('username') %>"><%- item.get('username') %></a>
+                        </td>
+                    </tr>
+                    <%
+                    });
+                    %>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-offset-3 col-md-6 text-center">
+            <ul class="pagination ">
+                <% if (offset >= items.pageSize) { %>
+                <li data-offset="0" class="pagination__item pagination__item_users">
+                    <a href="#">В начало</a>
+                </li>
+                <% } %>
+
+                <%
+                for(var i = items.getBeginPagination(offset); i < items.getEndPagination(offset); i++) { %>
+                <li data-offset="<%- (items.pageSize * i) %>" class="pagination__item pagination__item_users <% if (offset == (items.pageSize * i)) { %>active<% }%>">
+                    <a href="#"><%- i+1 %></a>
+                </li>
+                <% } %>
+
+                <% if (offset < items.pageSize * (items.pageCount -1)) { %>
+                <li data-offset="<%- (items.pageSize * (items.pageCount -1)) %>" class="pagination__item pagination__item_users">
+                    <a href="#">Последняя</a>
+                </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</div>

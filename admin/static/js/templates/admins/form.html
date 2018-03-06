@@ -1,0 +1,113 @@
+<div class="container">
+    <div class="row">
+        <h2><% if (item.get('id')) { %>
+            Редактирование администратора
+            <% } else { %>
+            Добавление администратора
+            <% } %>
+        </h2>
+        <form class="js-corp-form" role="form">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Email</label>
+                        <input type="text" class="form-control" name="email" value="<%- item.get('email') %>" required/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Имя</label>
+                        <input type="text" class="form-control" name="name" value="<%- item.get('name') %>"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="control-label">Пароль</label>
+                        <% if (item.get('id')) { %>
+                        <input type="password" class="form-control hidden" id="password" placeholder="Пароль" name="password" disabled/>
+                        <div class="js-change-password">
+                            <button type="button" class="btn btn-default">Изменить пароль</button>
+                        </div>
+                        <% } else { %>
+                        <input type="password" class="form-control" id="password" placeholder="Пароль" name="password"/>
+                        <% } %>
+                        <script type="text/javascript">
+                            require(['main'], function () {
+                                require(['jquery'], function () {
+                                    $('.js-change-password').click(function () {
+                                        $('#password').attr('disabled', false).removeClass('hidden');
+                                        $(this).remove();
+                                    });
+                                });
+                            });
+                        </script>
+                    </div>
+                    <div class="form-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">Права доступа</h3></div>
+                            <div class="panel-body">
+                                <div class="checkbox">
+                                    <label>
+                                        <input <%- item.get('permissions').admins ? 'checked' : '' %> type="checkbox"
+                                        name="admins" value="true" />
+                                        Администраторы
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input <%- item.get('permissions').users ? 'checked' : '' %> type="checkbox"
+                                        name="users" value="true">
+                                        Пользователи
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input <%- item.get('permissions').currencies ? 'checked' : '' %>
+                                        type="checkbox" name="currencies" value="true">
+                                        Валюты
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input <%- item.get('permissions').requests ? 'checked' : '' %> type="checkbox"
+                                        name="requests" value="true">
+                                        Запросы
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input <%- item.get('permissions').exchanges ? 'checked' : '' %> type="checkbox"
+                                        name="exchanges" value="true">
+                                        Обменники
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input <%- item.get('permissions').texts ? 'checked' : '' %> type="checkbox"
+                                        name="texts" value="true">
+                                        Тексты
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input <%- item.get('permissions').intervals ? 'checked' : '' %> type="checkbox"
+                                        name="intervals" value="true">
+                                        Интервалы
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <hr/>
+            <% if (item.get('id')) { %>
+            <input type="hidden" name="id" value="<%- item.get('id') %>"/>
+            <% } %>
+            <div class="form-group">
+                <div class="col-md-9">
+                    <button id="btn-signup" type="submit" class="btn btn-success">Сохранить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

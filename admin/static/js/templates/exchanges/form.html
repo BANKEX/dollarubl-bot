@@ -1,0 +1,74 @@
+<div class="container">
+    <div class="row">
+        <h2><% if (item.get('id')) { %>
+            Редактирование обменника
+            <% } else { %>
+            Добавление обменника
+            <% } %>
+        </h2>
+        <form class="js-exchange-form form-horizontal" role="form">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Telegram id</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" name="title" value="<%- item.get('out_id') %>"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Название</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" name="title" value="<%- item.get('title') %>" required/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Адрес</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" name="address" value="<%- item.get('address') %>" required/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Телефон</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" name="phone" value="<%- item.get('phone') %>"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Местоположение</label>
+                    <div class="col-md-10">
+                        <div id="map" style="width: 100%; height: 300px;"></div>
+                    </div>
+                    <input type="hidden" name="lat" value="<%- item.get('lat') %>">
+                    <input type="hidden" name="long" value="<%- item.get('long') %>">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="use_api">Активный</label>
+                        <div class="col-md-8">
+                            <div class="checkbox">
+                                <input id="use_api" type="checkbox" value="true" name="active" <%- item.get('active') ?
+                                'checked' : '' %>>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr/>
+
+            <% if (item.get('id')) { %>
+            <input type="hidden" name="id" value="<%- item.get('id') %>"/>
+            <% } %>
+            <div class="form-group">
+                <div class="col-md-9">
+                    <button id="btn-signup" type="submit" class="btn btn-success">Сохранить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
